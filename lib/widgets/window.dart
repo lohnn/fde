@@ -146,17 +146,35 @@ class SmallButton extends StatelessWidget {
       onTap: onTapped,
       child: Padding(
         padding: const EdgeInsets.all(2.0),
-        child: Container(
-          decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.redAccent,
-              boxShadow: [_defaultShadow]),
-          height: 20,
-          width: 20,
-          child: Icon(
-            Icons.close,
-            size: 16,
-          ),
+        child: _InnerSmallButton(),
+      ),
+    );
+  }
+}
+
+class _InnerSmallButton extends StatefulWidget {
+  @override
+  __InnerSmallButtonState createState() => __InnerSmallButtonState();
+}
+
+class __InnerSmallButtonState extends State<_InnerSmallButton> {
+  bool _isFocused = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isFocused = true),
+      onExit: (_) => setState(() => _isFocused = false),
+      child: Container(
+        decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: _isFocused ? Colors.red.shade700 : Colors.red.shade400,
+            boxShadow: [_defaultShadow]),
+        height: 20,
+        width: 20,
+        child: Icon(
+          Icons.close,
+          size: 16,
         ),
       ),
     );
