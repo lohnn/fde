@@ -78,8 +78,8 @@ class _WindowState extends State<Window> {
             Positioned(
               bottom: 0,
               right: 0,
-              height: 12,
-              width: 12,
+              height: 16,
+              width: 16,
               child: ResizeGrabber(
                 onDragged: (details) => setState(() {
                   final delta = details.delta;
@@ -104,7 +104,7 @@ class ResizeGrabber extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onPanUpdate: onDragged,
-      child: Container(color: Colors.grey.shade300),
+      child: Container(color: Colors.transparent),
     );
   }
 }
