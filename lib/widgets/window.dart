@@ -23,10 +23,14 @@ class Window extends StatefulWidget {
 class _WindowState extends State<Window> {
   double xPos;
   double yPos;
+  double width;
+  double height;
 
   _WindowState({
     this.xPos = 24,
     this.yPos = 40,
+    this.width = 300,
+    this.height = 200,
   });
 
   @override
@@ -34,8 +38,8 @@ class _WindowState extends State<Window> {
     return Positioned(
       left: xPos,
       top: yPos,
-      height: 194,
-      width: 291,
+      width: width,
+      height: height,
       child: Stack(
         children: [
           Positioned(
@@ -51,18 +55,43 @@ class _WindowState extends State<Window> {
             right: 0,
             height: Window._topBarHeight,
             child: TopBar(
-              onWindowMoved: (details) {
-                setState(() {
-                  final delta = details.delta;
-                  xPos += delta.dx;
-                  yPos += delta.dy;
-                });
-              },
+              onWindowMoved: (details) => setState(() {
+                final delta = details.delta;
+                xPos += delta.dx;
+                yPos += delta.dy;
+              }),
               onQuitTapped: widget.onQuitTapped,
             ),
           ),
+          Positioned(
+            bottom: 0,
+            right: 0,
+            height: 12,
+            width: 12,
+            child: ResizeGrabber(
+              onDragged: (details) => setState(() {
+                final delta = details.delta;
+                width += delta.dx;
+                height += delta.dy;
+              }),
+            ),
+          )
         ],
       ),
+    );
+  }
+}
+
+class ResizeGrabber extends StatelessWidget {
+  final GestureDragUpdateCallback onDragged;
+
+  const ResizeGrabber({Key key, this.onDragged}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onPanUpdate: onDragged,
+      child: Container(color: Colors.grey.shade300),
     );
   }
 }
