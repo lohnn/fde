@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_desktop_environment/widgets/window.dart';
+import 'package:uuid/uuid.dart';
 
 void main() => runApp(MyApp());
 
@@ -19,10 +20,34 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
+class _Temp {
+  final Widget child;
+  final double startX;
+  final double startY;
+
+  _Temp({
+    @required this.child,
+    @required this.startX,
+    @required this.startY,
+  });
+}
+
 class _MyHomePageState extends State<MyHomePage> {
-  List<Widget> _windows = [
-    Container(color: Colors.greenAccent),
-  ];
+  final _uuid = Uuid();
+  Map<String, _Temp> _windows = {};
+
+  @override
+  void initState() {
+    _windows[_uuid.v1()] = _Temp(
+      child: Container(color: Colors.greenAccent),
+      startX: _lastX += 20,
+      startY: _lastY += 15,
+    );
+    super.initState();
+  }
+
+  double _lastX = 24;
+  double _lastY = 40;
 
   @override
   Widget build(BuildContext context) {
@@ -42,19 +67,32 @@ class _MyHomePageState extends State<MyHomePage> {
             Center(
               child: Text('This is your new desktop environment'),
             ),
-            for (Widget child in _windows)
-              Window(
-                onQuitTapped: () => setState(() {
-                  _windows.remove(child);
-                }),
-                child: child,
-              ),
+            ..._windows
+                .map(
+                  (key, temp) => MapEntry(
+                    key,
+                    Window(
+                      key: Key(key),
+                      startX: temp.startX,
+                      startY: temp.startY,
+                      onQuitTapped: () => setState(() {
+                        _windows.remove(key);
+                      }),
+                      child: temp.child,
+                    ),
+                  ),
+                )
+                .values,
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => setState(() {
-          _windows.add(Container(color: Colors.orange));
+          _windows[_uuid.v1()] = _Temp(
+            child: Container(color: Colors.orangeAccent),
+            startX: _lastX += 20,
+            startY: _lastY += 15,
+          );
         }),
         child: Icon(Icons.add),
       ),

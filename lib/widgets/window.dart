@@ -1,37 +1,57 @@
 import 'package:flutter/material.dart';
 
-class Window extends StatelessWidget {
+class Window extends StatefulWidget {
   final Widget child;
   final Function onQuitTapped;
   static const _topBarHeight = 24.0;
+  final double startX;
+  final double startY;
 
-  const Window({Key key, @required this.child, this.onQuitTapped})
-      : assert(child != null),
+  const Window({
+    Key key,
+    @required this.child,
+    this.onQuitTapped,
+    this.startX,
+    this.startY,
+  })  : assert(child != null),
         super(key: key);
+
+  @override
+  _WindowState createState() => _WindowState(xPos: startX, yPos: startY);
+}
+
+class _WindowState extends State<Window> {
+  double xPos;
+  double yPos;
+
+  _WindowState({
+    this.xPos,
+    this.yPos,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: 40,
-      left: 24,
+      left: xPos ?? 24,
+      top: yPos ?? 40,
       height: 194,
       width: 291,
       child: Stack(
         children: [
           Positioned(
-            top: _topBarHeight,
+            top: Window._topBarHeight,
             left: 0,
             right: 0,
             bottom: 0,
-            child: child,
+            child: widget.child,
           ),
           Positioned(
             top: 0,
             left: 0,
             right: 0,
-            height: _topBarHeight,
+            height: Window._topBarHeight,
             child: TopBar(
-              onQuitTapped: onQuitTapped,
+              onQuitTapped: widget.onQuitTapped,
             ),
           ),
         ],
