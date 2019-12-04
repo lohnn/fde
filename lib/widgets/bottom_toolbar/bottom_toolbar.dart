@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_desktop_environment/apps/lohnn_web/lohnn_web.dart';
+import 'package:flutter_desktop_environment/widgets/settings/settings.dart';
 import 'package:flutter_desktop_environment/widgets/window/window.dart';
 
 class BottomToolbar extends StatelessWidget {
@@ -11,6 +12,7 @@ class BottomToolbar extends StatelessWidget {
 
   final List<_App> _apps = [
     _App(Icons.info, (context) => LohnnWebPage()),
+    _App(Icons.settings, (context) => Settings()),
   ];
 
   @override
@@ -26,19 +28,14 @@ class BottomToolbar extends StatelessWidget {
             topRight: _borders,
           ),
         ),
-        child: Material(
-          color: Colors.transparent,
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: _apps
-                .map(
-                  (app) => _ToolbarButton(
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: _apps
+              .map((app) => _ToolbarButton(
                     child: Icon(app.icon),
                     onTap: () => onAppSelected(app.widgetBuilder),
-                  ),
-                )
-                .toList(),
-          ),
+                  ))
+              .toList(),
         ),
       ),
     );
@@ -62,10 +59,13 @@ class _ToolbarButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return AspectRatio(
       aspectRatio: 1,
-      child: InkWell(
-        onTap: onTap,
-        child: Container(
-          child: child,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          child: Container(
+            child: child,
+          ),
         ),
       ),
     );
