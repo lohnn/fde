@@ -25,15 +25,15 @@ class _WindowState extends State<Window> {
   double yPos;
 
   _WindowState({
-    this.xPos,
-    this.yPos,
+    this.xPos = 24,
+    this.yPos = 40,
   });
 
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      left: xPos ?? 24,
-      top: yPos ?? 40,
+      left: xPos,
+      top: yPos,
       height: 194,
       width: 291,
       child: Stack(
@@ -51,6 +51,13 @@ class _WindowState extends State<Window> {
             right: 0,
             height: Window._topBarHeight,
             child: TopBar(
+              onWindowMoved: (details) {
+                setState(() {
+                  final delta = details.delta;
+                  xPos += delta.dx;
+                  yPos += delta.dy;
+                });
+              },
               onQuitTapped: widget.onQuitTapped,
             ),
           ),
@@ -62,19 +69,27 @@ class _WindowState extends State<Window> {
 
 class TopBar extends StatelessWidget {
   final Function onQuitTapped;
+  final GestureDragUpdateCallback onWindowMoved;
 
-  TopBar({Key key, this.onQuitTapped}) : super(key: key);
+  TopBar({
+    Key key,
+    this.onQuitTapped,
+    this.onWindowMoved,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.purple,
-      child: Row(
-        children: <Widget>[
-          SmallButton(
-            onTapped: onQuitTapped,
-          ),
-        ],
+    return GestureDetector(
+      onPanUpdate: onWindowMoved,
+      child: Container(
+        color: Colors.purple,
+        child: Row(
+          children: <Widget>[
+            SmallButton(
+              onTapped: onQuitTapped,
+            ),
+          ],
+        ),
       ),
     );
   }
