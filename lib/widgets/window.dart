@@ -20,6 +20,11 @@ class Window extends StatefulWidget {
   _WindowState createState() => _WindowState(xPos: startX, yPos: startY);
 }
 
+const _defaultShadow = const BoxShadow(
+  blurRadius: 8,
+  color: Colors.black26,
+);
+
 class _WindowState extends State<Window> {
   double xPos;
   double yPos;
@@ -42,12 +47,7 @@ class _WindowState extends State<Window> {
       height: height,
       child: Container(
         decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 8,
-              color: Colors.black26,
-            ),
-          ],
+          boxShadow: [_defaultShadow],
           borderRadius: BorderRadius.circular(5),
         ),
         child: Stack(
@@ -144,11 +144,20 @@ class SmallButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTapped,
-      child: Container(
-        height: 24,
-        width: 24,
-        color: Colors.redAccent,
-        child: Icon(Icons.close),
+      child: Padding(
+        padding: const EdgeInsets.all(2.0),
+        child: Container(
+          decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.redAccent,
+              boxShadow: [_defaultShadow]),
+          height: 20,
+          width: 20,
+          child: Icon(
+            Icons.close,
+            size: 16,
+          ),
+        ),
       ),
     );
   }
