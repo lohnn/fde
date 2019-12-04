@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_desktop_environment/apps/lohnn_web/lohnn_web.dart';
+import 'package:flutter_desktop_environment/widgets/bottom_toolbar/bottom_toolbar.dart';
 import 'package:flutter_desktop_environment/widgets/window/window.dart';
 import 'package:uuid/uuid.dart';
 
@@ -60,6 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
             image: Image.network(
               "http://www.technocrazed.com/wp-content/uploads/2015/12/Linux-Wallpaper-31.jpg",
             ).image,
+            colorFilter: ColorFilter.mode(Colors.white, BlendMode.overlay),
             fit: BoxFit.cover,
           ),
         ),
@@ -67,6 +69,22 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             Center(
               child: Text('This is your new desktop environment'),
+            ),
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: BottomToolbar(
+                onAppSelected: (widgetBuilder) {
+                  setState(() {
+                    _windows[_uuid.v1()] = _Temp(
+                      child: LohnnWebPage(),
+                      startX: _lastX += 20,
+                      startY: _lastY += 15,
+                    );
+                  });
+                },
+              ),
             ),
             ..._windows
                 .map(
@@ -86,16 +104,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 .values,
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => setState(() {
-          _windows[_uuid.v1()] = _Temp(
-            child: LohnnWebPage(),
-            startX: _lastX += 20,
-            startY: _lastY += 15,
-          );
-        }),
-        child: Icon(Icons.add),
       ),
     );
   }
