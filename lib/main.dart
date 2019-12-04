@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_desktop_environment/apps/lohnn_web/lohnn_web.dart';
-import 'package:flutter_desktop_environment/widgets/window.dart';
+import 'package:flutter_desktop_environment/widgets/window/window.dart';
 import 'package:uuid/uuid.dart';
 
 void main() => runApp(MyApp());

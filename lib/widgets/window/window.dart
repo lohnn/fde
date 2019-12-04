@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'toolbar.dart';
+
 class Window extends StatefulWidget {
   final Widget child;
   final Function onQuitTapped;
@@ -20,7 +22,7 @@ class Window extends StatefulWidget {
   _WindowState createState() => _WindowState(xPos: startX, yPos: startY);
 }
 
-const _defaultShadow = const BoxShadow(
+const defaultShadow = const BoxShadow(
   blurRadius: 8,
   color: Colors.black26,
 );
@@ -47,7 +49,7 @@ class _WindowState extends State<Window> {
       height: height,
       child: Container(
         decoration: BoxDecoration(
-          boxShadow: [_defaultShadow],
+          boxShadow: [defaultShadow],
           borderRadius: BorderRadius.circular(5),
         ),
         child: Stack(
@@ -103,80 +105,6 @@ class ResizeGrabber extends StatelessWidget {
     return GestureDetector(
       onPanUpdate: onDragged,
       child: Container(color: Colors.grey.shade300),
-    );
-  }
-}
-
-class TopBar extends StatelessWidget {
-  final Function onQuitTapped;
-  final GestureDragUpdateCallback onWindowMoved;
-
-  TopBar({
-    Key key,
-    this.onQuitTapped,
-    this.onWindowMoved,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onPanUpdate: onWindowMoved,
-      child: Container(
-        color: Colors.purple,
-        child: Row(
-          children: <Widget>[
-            SmallButton(
-              onTapped: onQuitTapped,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class SmallButton extends StatelessWidget {
-  final Function onTapped;
-
-  const SmallButton({Key key, this.onTapped}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTapped,
-      child: Padding(
-        padding: const EdgeInsets.all(2.0),
-        child: _InnerSmallButton(),
-      ),
-    );
-  }
-}
-
-class _InnerSmallButton extends StatefulWidget {
-  @override
-  __InnerSmallButtonState createState() => __InnerSmallButtonState();
-}
-
-class __InnerSmallButtonState extends State<_InnerSmallButton> {
-  bool _isFocused = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) => setState(() => _isFocused = true),
-      onExit: (_) => setState(() => _isFocused = false),
-      child: Container(
-        decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: _isFocused ? Colors.red.shade700 : Colors.red.shade400,
-            boxShadow: [_defaultShadow]),
-        height: 20,
-        width: 20,
-        child: Icon(
-          Icons.close,
-          size: 16,
-        ),
-      ),
     );
   }
 }
