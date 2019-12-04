@@ -92,9 +92,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           child: Stack(
             children: <Widget>[
-              Center(
-                child: Text('This is your new desktop environment'),
-              ),
               Positioned(
                 bottom: 0,
                 left: 0,

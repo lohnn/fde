@@ -36,7 +36,7 @@ class _WindowState extends State<Window> {
   _WindowState({
     this.xPos = 24,
     this.yPos = 40,
-    this.width = 500,
+    this.width = 600,
     this.height = 400,
   });
 
