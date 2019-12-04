@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_desktop_environment/apps/lohnn_web/lohnn_web.dart';
 import 'package:flutter_desktop_environment/widgets/window.dart';
 import 'package:uuid/uuid.dart';
 
@@ -89,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () => setState(() {
           _windows[_uuid.v1()] = _Temp(
-            child: Container(color: Colors.orangeAccent),
+            child: LohnnWebPage(),
             startX: _lastX += 20,
             startY: _lastY += 15,
           );

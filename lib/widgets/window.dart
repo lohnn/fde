@@ -40,43 +40,54 @@ class _WindowState extends State<Window> {
       top: yPos,
       width: width,
       height: height,
-      child: Stack(
-        children: [
-          Positioned(
-            top: Window._topBarHeight,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: widget.child,
-          ),
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            height: Window._topBarHeight,
-            child: TopBar(
-              onWindowMoved: (details) => setState(() {
-                final delta = details.delta;
-                xPos += delta.dx;
-                yPos += delta.dy;
-              }),
-              onQuitTapped: widget.onQuitTapped,
+      child: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 8,
+              color: Colors.black26,
             ),
-          ),
-          Positioned(
-            bottom: 0,
-            right: 0,
-            height: 12,
-            width: 12,
-            child: ResizeGrabber(
-              onDragged: (details) => setState(() {
-                final delta = details.delta;
-                width += delta.dx;
-                height += delta.dy;
-              }),
+          ],
+          borderRadius: BorderRadius.circular(5),
+        ),
+        child: Stack(
+          children: [
+            Positioned(
+              top: Window._topBarHeight,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: widget.child,
             ),
-          )
-        ],
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              height: Window._topBarHeight,
+              child: TopBar(
+                onWindowMoved: (details) => setState(() {
+                  final delta = details.delta;
+                  xPos += delta.dx;
+                  yPos += delta.dy;
+                }),
+                onQuitTapped: widget.onQuitTapped,
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              right: 0,
+              height: 12,
+              width: 12,
+              child: ResizeGrabber(
+                onDragged: (details) => setState(() {
+                  final delta = details.delta;
+                  width += delta.dx;
+                  height += delta.dy;
+                }),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
