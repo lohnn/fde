@@ -17,7 +17,7 @@ class TopBar extends StatelessWidget {
     return GestureDetector(
       onPanUpdate: onWindowMoved,
       child: Container(
-        color: Colors.purple,
+        color: Theme.of(context).primaryColor,
         child: Row(
           children: <Widget>[
             SmallButton(
@@ -48,6 +48,8 @@ class SmallButton extends StatelessWidget {
 }
 
 class _InnerSmallButton extends StatefulWidget {
+  final double _size = 16;
+
   @override
   __InnerSmallButtonState createState() => __InnerSmallButtonState();
 }
@@ -65,11 +67,11 @@ class __InnerSmallButtonState extends State<_InnerSmallButton> {
             shape: BoxShape.circle,
             color: _isFocused ? Colors.red.shade700 : Colors.red.shade400,
             boxShadow: [defaultShadow]),
-        height: 20,
-        width: 20,
+        height: widget._size,
+        width: widget._size,
         child: Icon(
           Icons.close,
-          size: 16,
+          size: widget._size - 4,
         ),
       ),
     );
