@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_desktop_environment/apps/lohnn_web/lohnn_web.dart';
 import 'package:flutter_desktop_environment/widgets/bottom_toolbar/bottom_toolbar.dart';
+import 'package:flutter_desktop_environment/widgets/box_opener.dart';
 import 'package:flutter_desktop_environment/widgets/window/window.dart';
+import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart' as pathProvider;
 import 'package:uuid/uuid.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final appDocumentDirectory =
+      await pathProvider.getApplicationDocumentsDirectory();
+  Hive.init(appDocumentDirectory.path);
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -55,55 +64,63 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: Image.network(
-              "http://www.technocrazed.com/wp-content/uploads/2015/12/Linux-Wallpaper-31.jpg",
-            ).image,
-            colorFilter: ColorFilter.mode(Colors.white, BlendMode.overlay),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Stack(
-          children: <Widget>[
-            Center(
-              child: Text('This is your new desktop environment'),
-            ),
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: BottomToolbar(
-                onAppSelected: (widgetBuilder) {
-                  setState(() {
-                    _windows[_uuid.v1()] = _Temp(
-                      child: LohnnWebPage(),
-                      startX: _lastX += 20,
-                      startY: _lastY += 15,
-                    );
-                  });
-                },
+      body: BoxOpener(
+        boxNames: ['settings'],
+        onSuccess: (context) {
+          Box settings = Hive.box("settings");
+          return Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: Image.network(
+                  "http://www.technocrazed.com/wp-content/uploads/2015/12/Linux-Wallpaper-31.jpg",
+                ).image,
+                colorFilter: ColorFilter.mode(
+                    settings.get("backgroind_tint") ?? Colors.orange,
+                    BlendMode.color),
+                fit: BoxFit.cover,
               ),
             ),
-            ..._windows
-                .map(
-                  (key, temp) => MapEntry(
-                    key,
-                    Window(
-                      key: Key(key),
-                      startX: temp.startX,
-                      startY: temp.startY,
-                      onQuitTapped: () => setState(() {
-                        _windows.remove(key);
-                      }),
-                      child: temp.child,
-                    ),
+            child: Stack(
+              children: <Widget>[
+                Center(
+                  child: Text('This is your new desktop environment'),
+                ),
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: BottomToolbar(
+                    onAppSelected: (widgetBuilder) {
+                      setState(() {
+                        _windows[_uuid.v1()] = _Temp(
+                          child: LohnnWebPage(),
+                          startX: _lastX += 20,
+                          startY: _lastY += 15,
+                        );
+                      });
+                    },
                   ),
-                )
-                .values,
-          ],
-        ),
+                ),
+                ..._windows
+                    .map(
+                      (key, temp) => MapEntry(
+                        key,
+                        Window(
+                          key: Key(key),
+                          startX: temp.startX,
+                          startY: temp.startY,
+                          onQuitTapped: () => setState(() {
+                            _windows.remove(key);
+                          }),
+                          child: temp.child,
+                        ),
+                      ),
+                    )
+                    .values,
+              ],
+            ),
+          );
+        },
       ),
     );
   }
