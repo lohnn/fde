@@ -40,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     _windows[_uuid.v1()] = _Temp(
-      child: Container(color: Colors.greenAccent),
+      child: LohnnWebPage(),
       startX: _lastX += 20,
       startY: _lastY += 15,
     );
