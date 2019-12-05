@@ -88,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 "http://www.technocrazed.com/wp-content/uploads/2015/12/Linux-Wallpaper-31.jpg",
               ).image,
               colorFilter: ColorFilter.mode(
-                  settings.get("backgroind_tint", defaultValue: Colors.orange),
+                  Color(settings.get("backgroind_tint", defaultValue: Colors.orange.value)),
                   BlendMode.color),
               fit: BoxFit.cover,
             ),

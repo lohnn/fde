@@ -24,10 +24,10 @@ class Settings extends StatelessWidget {
                     title: const Text('Pick a color!'),
                     content: SingleChildScrollView(
                       child: ColorPicker(
-                        pickerColor: settings.get("backgroind_tint",
-                            defaultValue: Colors.orange),
+                        pickerColor: Color(settings.get("backgroind_tint",
+                            defaultValue: Colors.orange.value)),
                         onColorChanged: (color) =>
-                            settings.put("backgroind_tint", color),
+                            settings.put("backgroind_tint", color.value),
                         enableLabel: true,
                         pickerAreaHeightPercent: 0.8,
                       ),
