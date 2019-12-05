@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
+import 'helpers/deeplink.dart';
 import 'static.dart';
 
 class LohnnWebPage extends StatelessWidget {
@@ -126,7 +127,7 @@ class PhoneNumber extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-//      onTap: () => openLink("tel:076-800 07 61", 'phone'),
+      onTap: () => openLink("tel:076-800 07 61", 'phone'),
       leading: Icon(Icons.phone),
       title: Text("076-800 07 61"),
       subtitle: Text("Personal"),
@@ -138,7 +139,7 @@ class Email extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-//      onTap: () => openLink("mailto:johannes@lohnn.se", 'email'),
+      onTap: () => openLink("mailto:johannes@lohnn.se", 'email'),
       leading: Icon(Icons.mail),
       title: Text("johannes@lohnn.se"),
       subtitle: Text("Personal"),
@@ -150,7 +151,7 @@ class Github extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-//      onTap: () => openLink("https://github.com/lohnn", 'github'),
+      onTap: () => openLink("https://github.com/lohnn", 'github'),
       leading: Image.asset(
         "assets/icons/github.png",
         width: 24,

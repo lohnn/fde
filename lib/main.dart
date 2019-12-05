@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_desktop_environment/apps/lohnn_web/lohnn_web.dart';
 import 'package:flutter_desktop_environment/widgets/bottom_toolbar/bottom_toolbar.dart';
@@ -9,10 +10,12 @@ import 'package:path_provider/path_provider.dart' as pathProvider;
 import 'package:uuid/uuid.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  final appDocumentDirectory =
-      await pathProvider.getApplicationDocumentsDirectory();
-  Hive.init(appDocumentDirectory.path);
+  if (!kIsWeb) {
+    WidgetsFlutterBinding.ensureInitialized();
+    final appDocumentDirectory =
+        await pathProvider.getApplicationDocumentsDirectory();
+    Hive.init(appDocumentDirectory.path);
+  }
   runApp(MyApp());
 }
 
