@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_desktop_environment/apps/lohnn_web/lohnn_web.dart';
 import 'package:flutter_desktop_environment/widgets/settings/settings.dart';
@@ -60,7 +61,7 @@ class _ToolbarButton extends StatelessWidget {
     return AspectRatio(
       aspectRatio: 1,
       child: Material(
-        color: Colors.transparent,
+        color: kIsWeb ? Theme.of(context).primaryColorDark : Colors.transparent,
         child: InkWell(
           onTap: onTap,
           child: Container(
