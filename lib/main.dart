@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
           box: Hive.box("settings"),
           builder: (context, settings) => MaterialApp(
             title: 'Flutter Demo',
-            theme: settings.get("dark_mode", defaultValue: false)
+            theme: settings.get("dark_mode", defaultValue: true)
                 ? ThemeData.dark()
                 : ThemeData(),
             home: MyHomePage(),

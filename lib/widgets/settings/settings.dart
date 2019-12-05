@@ -12,7 +12,7 @@ class Settings extends StatelessWidget {
         builder: (context, settings) => Column(
           children: <Widget>[
             SwitchListTile.adaptive(
-              value: settings.get("dark_mode", defaultValue: false),
+              value: settings.get("dark_mode", defaultValue: true),
               onChanged: (value) => settings.put("dark_mode", value),
               title: Text("Dark mode"),
             ),
