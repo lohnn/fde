@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_desktop_environment/apps/lohnn_web/lohnn_web.dart';
+import 'package:flutter_desktop_environment/widgets/window/window.dart';
 import 'package:uuid/uuid.dart';
 
 class ActivityManager with ChangeNotifier {
@@ -9,14 +9,25 @@ class ActivityManager with ChangeNotifier {
 
   Map<String, _Temp> _windows = {};
 
-  Map<String, _Temp> get windows => _windows;
+  Iterable<Window> get windows => _windows
+      .map((key, temp) => MapEntry(
+            key,
+            Window(
+              key: Key(key),
+              startX: temp.startX,
+              startY: temp.startY,
+              onQuitTapped: () => closeActivity(key),
+              child: temp.child,
+            ),
+          ))
+      .values;
 
   ActivityManager() {
-    _windows[_uuid.v1()] = _Temp(
-      child: LohnnWebPage(),
-      startX: _lastX += 20,
-      startY: _lastY += 15,
-    );
+//    _windows[_uuid.v1()] = _Temp(
+//      child: LohnnWebPage(),
+//      startX: _lastX += 20,
+//      startY: _lastY += 15,
+//    );
   }
 
   void closeActivity(String windowId) {

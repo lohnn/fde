@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_desktop_environment/data/activity_manager.dart';
 import 'package:flutter_desktop_environment/widgets/bottom_toolbar/bottom_toolbar.dart';
 import 'package:flutter_desktop_environment/widgets/box_opener.dart';
-import 'package:flutter_desktop_environment/widgets/window/window.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart' as pathProvider;
@@ -54,7 +53,6 @@ class MyHomePage extends StatelessWidget {
         box: Hive.box("settings"),
         builder: (context, settings) => LayoutBuilder(
           builder: (context, constraints) {
-            print(constraints.maxWidth);
             if (constraints.maxWidth < 600 || constraints.maxHeight < 600) {
               return FullScreen(settings);
             } else {
@@ -76,9 +74,9 @@ class FullScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<ActivityManager>(
       builder: (context, activityManager, _) {
-        final activities = activityManager.windows.values;
+        final activities = activityManager.windows;
         if (activities.isNotEmpty) {
-          return activityManager.windows.values.first.child;
+          return activities.last.child;
         } else {
           return Container(
             decoration: BoxDecoration(
@@ -147,18 +145,7 @@ class Windowed extends StatelessWidget {
                 },
               ),
             ),
-            ...activityManager.windows
-                .map((key, temp) => MapEntry(
-                      key,
-                      Window(
-                        key: Key(key),
-                        startX: temp.startX,
-                        startY: temp.startY,
-                        onQuitTapped: () => activityManager.closeActivity(key),
-                        child: temp.child,
-                      ),
-                    ))
-                .values,
+            ...activityManager.windows,
           ],
         ),
       ),
