@@ -54,10 +54,62 @@ class MyHomePage extends StatelessWidget {
         box: Hive.box("settings"),
         builder: (context, settings) => LayoutBuilder(
           builder: (context, constraints) {
-            return Windowed(settings);
+            print(constraints.maxWidth);
+            if (constraints.maxWidth < 600 || constraints.maxHeight < 600) {
+              return FullScreen(settings);
+            } else {
+              return Windowed(settings);
+            }
           },
         ),
       ),
+    );
+  }
+}
+
+class FullScreen extends StatelessWidget {
+  final Box _settings;
+
+  FullScreen(this._settings);
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<ActivityManager>(
+      builder: (context, activityManager, _) {
+        final activities = activityManager.windows.values;
+        if (activities.isNotEmpty) {
+          return activityManager.windows.values.first.child;
+        } else {
+          return Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: Image.network(
+                  "http://www.technocrazed.com/wp-content/uploads/2015/12/Linux-Wallpaper-31.jpg",
+                ).image,
+                colorFilter: ColorFilter.mode(
+                    Color(_settings.get("backgroind_tint",
+                        defaultValue: Colors.orange.value)),
+                    BlendMode.color),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Stack(
+              children: <Widget>[
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: BottomToolbar(
+                    onAppSelected: (widgetBuilder) {
+                      activityManager.startActivity(widgetBuilder(context));
+                    },
+                  ),
+                )
+              ],
+            ),
+          );
+        }
+      },
     );
   }
 }
@@ -83,9 +135,7 @@ class Windowed extends StatelessWidget {
         ),
       ),
       child: Consumer<ActivityManager>(
-        builder: (BuildContext context, ActivityManager activityManager,
-                Widget child) =>
-            Stack(
+        builder: (context, activityManager, _) => Stack(
           children: <Widget>[
             Positioned(
               bottom: 0,
