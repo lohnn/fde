@@ -11,34 +11,37 @@ class Windowed extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: Image.network(
-            "http://www.technocrazed.com/wp-content/uploads/2015/12/Linux-Wallpaper-31.jpg",
-          ).image,
-          colorFilter: ColorFilter.mode(
-              Color(_settings.get("backgroind_tint",
-                  defaultValue: Colors.orange.value)),
-              BlendMode.color),
-          fit: BoxFit.cover,
+    return Scaffold(
+      appBar: AppBar(),
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: Image.network(
+              "http://www.technocrazed.com/wp-content/uploads/2015/12/Linux-Wallpaper-31.jpg",
+            ).image,
+            colorFilter: ColorFilter.mode(
+                Color(_settings.get("backgroind_tint",
+                    defaultValue: Colors.orange.value)),
+                BlendMode.color),
+            fit: BoxFit.cover,
+          ),
         ),
-      ),
-      child: Consumer<ActivityManager>(
-        builder: (context, activityManager, _) => Stack(
-          children: <Widget>[
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: BottomToolbar(
-                onAppSelected: (widgetBuilder) {
-                  activityManager.startActivity(widgetBuilder(context));
-                },
+        child: Consumer<ActivityManager>(
+          builder: (context, activityManager, _) => Stack(
+            children: <Widget>[
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: BottomToolbar(
+                  onAppSelected: (widgetBuilder) {
+                    activityManager.startActivity(widgetBuilder(context));
+                  },
+                ),
               ),
-            ),
-            ...activityManager.windows,
-          ],
+              ...activityManager.windows,
+            ],
+          ),
         ),
       ),
     );

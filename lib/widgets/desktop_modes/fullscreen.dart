@@ -15,34 +15,47 @@ class FullScreen extends StatelessWidget {
       builder: (context, activityManager, _) {
         final activities = activityManager.windows;
         if (activities.isNotEmpty) {
-          return activities.last.child;
-        } else {
-          return Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: Image.network(
-                  "http://www.technocrazed.com/wp-content/uploads/2015/12/Linux-Wallpaper-31.jpg",
-                ).image,
-                colorFilter: ColorFilter.mode(
-                    Color(_settings.get("backgroind_tint",
-                        defaultValue: Colors.orange.value)),
-                    BlendMode.color),
-                fit: BoxFit.cover,
+          return Scaffold(
+            appBar: AppBar(
+              leading: IconButton(
+                icon: Icon(Icons.close),
+                onPressed: () {
+                  activityManager.closeTopActivity();
+                },
               ),
             ),
-            child: Stack(
-              children: <Widget>[
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  child: BottomToolbar(
-                    onAppSelected: (widgetBuilder) {
-                      activityManager.startActivity(widgetBuilder(context));
-                    },
-                  ),
-                )
-              ],
+            body: activities.last.child,
+          );
+        } else {
+          return Scaffold(
+            appBar: AppBar(),
+            body: Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: Image.network(
+                    "http://www.technocrazed.com/wp-content/uploads/2015/12/Linux-Wallpaper-31.jpg",
+                  ).image,
+                  colorFilter: ColorFilter.mode(
+                      Color(_settings.get("backgroind_tint",
+                          defaultValue: Colors.orange.value)),
+                      BlendMode.color),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Stack(
+                children: <Widget>[
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: BottomToolbar(
+                      onAppSelected: (widgetBuilder) {
+                        activityManager.startActivity(widgetBuilder(context));
+                      },
+                    ),
+                  )
+                ],
+              ),
             ),
           );
         }

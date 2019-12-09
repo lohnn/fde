@@ -48,19 +48,16 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: WatchBoxBuilder(
-        box: Hive.box("settings"),
-        builder: (context, settings) => LayoutBuilder(
-          builder: (context, constraints) {
-            if (constraints.maxWidth < 600 || constraints.maxHeight < 600) {
-              return FullScreen(settings);
-            } else {
-              return Windowed(settings);
-            }
-          },
-        ),
+    return WatchBoxBuilder(
+      box: Hive.box("settings"),
+      builder: (context, settings) => LayoutBuilder(
+        builder: (context, constraints) {
+          if (constraints.maxWidth < 600 || constraints.maxHeight < 600) {
+            return FullScreen(settings);
+          } else {
+            return Windowed(settings);
+          }
+        },
       ),
     );
   }

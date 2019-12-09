@@ -7,20 +7,17 @@ class ActivityManager with ChangeNotifier {
   double _lastX = 24;
   double _lastY = 40;
 
-  Map<String, _Temp> _windows = {};
+  List<MapEntry<String, _Temp>> _windows = [];
 
-  Iterable<Window> get windows => _windows
-      .map((key, temp) => MapEntry(
-            key,
-            Window(
-              key: Key(key),
-              startX: temp.startX,
-              startY: temp.startY,
-              onQuitTapped: () => closeActivity(key),
-              child: temp.child,
-            ),
-          ))
-      .values;
+  Iterable<Window> get windows => _windows.map(
+        (entry) => Window(
+          key: Key(entry.key),
+          startX: entry.value.startX,
+          startY: entry.value.startY,
+          onQuitTapped: () => closeActivity(entry.key),
+          child: entry.value.child,
+        ),
+      );
 
   ActivityManager() {
 //    _windows[_uuid.v1()] = _Temp(
@@ -31,17 +28,27 @@ class ActivityManager with ChangeNotifier {
   }
 
   void closeActivity(String windowId) {
-    _windows.remove(windowId);
+    _windows.removeWhere((entry) => entry.key == windowId);
     notifyListeners();
   }
 
   void startActivity(Widget widget) {
-    _windows[_uuid.v1()] = _Temp(
-      child: widget,
-      startX: _lastX += 20,
-      startY: _lastY += 15,
+    _windows.add(
+      MapEntry(
+        _uuid.v1(),
+        _Temp(
+          child: widget,
+          startX: _lastX += 20,
+          startY: _lastY += 15,
+        ),
+      ),
     );
     print("Windows now ${_windows.length}");
+    notifyListeners();
+  }
+
+  void closeTopActivity() {
+    _windows.removeLast();
     notifyListeners();
   }
 }
