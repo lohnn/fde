@@ -13,7 +13,7 @@ class FullScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<ActivityManager>(
       builder: (context, activityManager, _) {
-        final activities = activityManager.windows;
+        final activities = activityManager.activities;
         if (activities.isNotEmpty) {
           return Scaffold(
             appBar: AppBar(
@@ -24,7 +24,7 @@ class FullScreen extends StatelessWidget {
                 },
               ),
             ),
-            body: activities.last.child,
+            body: activities.last.value.child,
           );
         } else {
           return Scaffold(

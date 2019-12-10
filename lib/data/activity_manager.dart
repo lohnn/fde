@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_desktop_environment/widgets/window/window.dart';
 import 'package:uuid/uuid.dart';
 
 class ActivityManager with ChangeNotifier {
@@ -7,17 +6,9 @@ class ActivityManager with ChangeNotifier {
   double _lastX = 24;
   double _lastY = 40;
 
-  List<MapEntry<String, _Temp>> _windows = [];
+  List<MapEntry<String, _Temp>> _activities = [];
 
-  Iterable<Window> get windows => _windows.map(
-        (entry) => Window(
-          key: Key(entry.key),
-          startX: entry.value.startX,
-          startY: entry.value.startY,
-          onQuitTapped: () => closeActivity(entry.key),
-          child: entry.value.child,
-        ),
-      );
+  Iterable<MapEntry<String, _Temp>> get activities => _activities;
 
   ActivityManager() {
 //    _windows[_uuid.v1()] = _Temp(
@@ -28,12 +19,12 @@ class ActivityManager with ChangeNotifier {
   }
 
   void closeActivity(String windowId) {
-    _windows.removeWhere((entry) => entry.key == windowId);
+    _activities.removeWhere((entry) => entry.key == windowId);
     notifyListeners();
   }
 
   void startActivity(Widget widget) {
-    _windows.add(
+    _activities.add(
       MapEntry(
         _uuid.v1(),
         _Temp(
@@ -43,12 +34,12 @@ class ActivityManager with ChangeNotifier {
         ),
       ),
     );
-    print("Windows now ${_windows.length}");
+    print("Windows now ${_activities.length}");
     notifyListeners();
   }
 
   void closeTopActivity() {
-    _windows.removeLast();
+    _activities.removeLast();
     notifyListeners();
   }
 }
