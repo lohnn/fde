@@ -67,6 +67,9 @@ class _WindowedState extends State<Windowed> {
                     startY: entry.value.startY,
                     onQuitTapped: () =>
                         activityManager.closeActivity(entry.key),
+                    onWindowInteracted: () {
+                      activityManager.activityToForeground(entry);
+                    },
                   )),
             ],
           ),

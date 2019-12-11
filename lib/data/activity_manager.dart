@@ -5,6 +5,7 @@ class ActivityManager with ChangeNotifier {
   final _uuid = Uuid();
   double _lastX = 24;
   double _lastY = 40;
+  int _maxSortIndex = 0;
 
   List<MapEntry<String, _Temp>> _activities = [];
 
@@ -31,10 +32,10 @@ class ActivityManager with ChangeNotifier {
           child: widget,
           startX: _lastX += 20,
           startY: _lastY += 15,
+          sortIndex: _maxSortIndex++,
         ),
       ),
     );
-    print("Windows now ${_activities.length}");
     notifyListeners();
   }
 
@@ -42,10 +43,17 @@ class ActivityManager with ChangeNotifier {
     _activities.removeLast();
     notifyListeners();
   }
+
+  void activityToForeground(MapEntry<String, _Temp> entry) {
+    entry.value.sortIndex = _maxSortIndex++;
+    _activities.sort((a, b) => a.value.sortIndex.compareTo(b.value.sortIndex));
+    notifyListeners();
+  }
 }
 
 class _Temp {
   final Widget child;
+  int sortIndex;
   final double startX;
   final double startY;
 
@@ -53,5 +61,6 @@ class _Temp {
     @required this.child,
     @required this.startX,
     @required this.startY,
+    @required this.sortIndex,
   });
 }

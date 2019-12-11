@@ -5,6 +5,7 @@ import 'toolbar.dart';
 class Window extends StatefulWidget {
   final Widget child;
   final Function onQuitTapped;
+  final Function onWindowInteracted;
   static const _topBarHeight = 24.0;
   final double startX;
   final double startY;
@@ -13,6 +14,7 @@ class Window extends StatefulWidget {
     Key key,
     @required this.child,
     this.onQuitTapped,
+    this.onWindowInteracted,
     this.startX,
     this.startY,
   })  : assert(child != null),
@@ -47,48 +49,53 @@ class _WindowState extends State<Window> {
       top: yPos,
       width: width,
       height: height,
-      child: Container(
-        decoration: BoxDecoration(
-          boxShadow: [defaultShadow],
-          borderRadius: BorderRadius.circular(5),
-        ),
-        child: Stack(
-          children: [
-            Positioned(
-              top: Window._topBarHeight,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: widget.child,
-            ),
-            Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              height: Window._topBarHeight,
-              child: TopBar(
-                onWindowMoved: (details) => setState(() {
-                  final delta = details.delta;
-                  xPos += delta.dx;
-                  yPos += delta.dy;
-                }),
-                onQuitTapped: widget.onQuitTapped,
+      child: GestureDetector(
+        onTapDown: (_) {
+          widget.onWindowInteracted();
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            boxShadow: [defaultShadow],
+            borderRadius: BorderRadius.circular(5),
+          ),
+          child: Stack(
+            children: [
+              Positioned(
+                top: Window._topBarHeight,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: widget.child,
               ),
-            ),
-            Positioned(
-              bottom: 0,
-              right: 0,
-              height: 16,
-              width: 16,
-              child: ResizeGrabber(
-                onDragged: (details) => setState(() {
-                  final delta = details.delta;
-                  width += delta.dx;
-                  height += delta.dy;
-                }),
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                height: Window._topBarHeight,
+                child: TopBar(
+                  onWindowMoved: (details) => setState(() {
+                    final delta = details.delta;
+                    xPos += delta.dx;
+                    yPos += delta.dy;
+                  }),
+                  onQuitTapped: widget.onQuitTapped,
+                ),
               ),
-            )
-          ],
+              Positioned(
+                bottom: 0,
+                right: 0,
+                height: 16,
+                width: 16,
+                child: ResizeGrabber(
+                  onDragged: (details) => setState(() {
+                    final delta = details.delta;
+                    width += delta.dx;
+                    height += delta.dy;
+                  }),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
