@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_desktop_environment/apps/about/about.dart';
 import 'package:flutter_desktop_environment/apps/lohnn_web/lohnn_web.dart';
-import 'package:flutter_desktop_environment/widgets/settings/settings.dart';
+import 'package:flutter_desktop_environment/apps/settings/settings.dart';
 import 'package:flutter_desktop_environment/widgets/window/window.dart';
 
 class BottomToolbar extends StatelessWidget {
@@ -12,8 +13,26 @@ class BottomToolbar extends StatelessWidget {
   BottomToolbar({Key key, this.onAppSelected}) : super(key: key);
 
   final List<_App> _apps = [
-    _App(Icons.info, (context) => LohnnWebPage()),
-    _App(Icons.settings, (context) => Settings()),
+    _App(
+      icon: Icons.info,
+      name: "Information about Johannes",
+      widgetBuilder: (context) => LohnnWebPage(),
+    ),
+//    _App(
+//      icon: Icons.watch_later,
+//      name: "Watch app",
+//      widgetBuilder: (context) => Clock(),
+//    ),
+    _App(
+      icon: Icons.settings,
+      name: "Settings",
+      widgetBuilder: (context) => Settings(),
+    ),
+    _App(
+      icon: Icons.info,
+      name: "About",
+      widgetBuilder: (context) => AboutPage(),
+    ),
   ];
 
   @override
@@ -46,8 +65,15 @@ class BottomToolbar extends StatelessWidget {
 class _App {
   final IconData icon;
   final WidgetBuilder widgetBuilder;
+  final String name;
 
-  const _App(this.icon, this.widgetBuilder);
+  const _App({
+    @required this.icon,
+    @required this.widgetBuilder,
+    @required this.name,
+  })  : assert(icon != null),
+        assert(widgetBuilder != null),
+        assert(name != null);
 }
 
 class _ToolbarButton extends StatelessWidget {

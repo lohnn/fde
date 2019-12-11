@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_desktop_environment/apps/lohnn_web/lohnn_web.dart';
 import 'package:uuid/uuid.dart';
 
 class ActivityManager with ChangeNotifier {
@@ -12,10 +13,15 @@ class ActivityManager with ChangeNotifier {
   Iterable<MapEntry<String, _Temp>> get activities => _activities;
 
   ActivityManager() {
-//    _windows[_uuid.v1()] = _Temp(
-//      child: LohnnWebPage(),
-//      startX: _lastX += 20,
-//      startY: _lastY += 15,
+//    _activities.add(
+//      MapEntry(
+//        _uuid.v1(),
+//        _Temp(
+//            child: LohnnWebPage(),
+//            startX: _lastX += 20,
+//            startY: _lastY += 15,
+//            sortIndex: _maxSortIndex++),
+//      ),
 //    );
   }
 
