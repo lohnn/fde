@@ -111,7 +111,50 @@ class ResizeGrabber extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onPanUpdate: onDragged,
-      child: Container(color: Colors.transparent),
+      child: CustomPaint(
+        key: Key("grabber"),
+        painter: _ResizeGrabberPainter(),
+      ),
     );
   }
+}
+
+class _ResizeGrabberPainter extends CustomPainter {
+  static const _radius = 1.25;
+    static final _paint = Paint()..color = Colors.white.withAlpha(100);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    print(size);
+    //Top right
+    canvas.drawCircle(
+      Offset(size.width * 0.75, size.height * 0.25),
+      _radius,
+      _paint,
+    );
+
+    //Center
+    canvas.drawCircle(
+      Offset(size.width * 0.5, size.height * 0.5),
+      _radius,
+      _paint,
+    );
+
+    //Bottom right
+    canvas.drawCircle(
+      Offset(size.width * 0.75, size.height * 0.75),
+      _radius,
+      _paint,
+    );
+
+    //Bottom left
+    canvas.drawCircle(
+      Offset(size.width * 0.25, size.height * 0.75),
+      _radius,
+      _paint,
+    );
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
