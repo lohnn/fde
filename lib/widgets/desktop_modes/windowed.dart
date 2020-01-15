@@ -1,9 +1,11 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_desktop_environment/data/activity_manager.dart';
 import 'package:flutter_desktop_environment/widgets/bottom_toolbar/bottom_toolbar.dart';
 import 'package:flutter_desktop_environment/widgets/window/window.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 class Windowed extends StatefulWidget {
   final Box _settings;
@@ -50,6 +52,65 @@ class _WindowedState extends State<Windowed> {
           ),
           child: Stack(
             children: <Widget>[
+              Positioned.fill(
+                child: Listener(
+                  onPointerDown: (event) async {
+                    if (event.buttons == kSecondaryButton) {
+                      final clickPos = event.position;
+                      final dx = clickPos.dx;
+                      final dy = clickPos.dy;
+                      final menuResult = await showMenu<String>(
+                        context: context,
+                        position: RelativeRect.fromLTRB(dx, dy, dx, dy),
+                        items: [
+                          CheckedPopupMenuItem(
+                            child: Text("Dark mode"),
+                            value: "darkmode",
+                            checked: widget._settings.get("dark_mode"),
+                          ),
+                          PopupMenuItem(
+                            child: Text("Set background tint"),
+                            value: "backgroundTint",
+                          ),
+                        ],
+                      );
+                      menuResult.when({
+                        "darkmode": () {
+                          widget._settings.put("dark_mode", !widget._settings.get("dark_mode"));
+                        },
+                        "backgroundTint": () {
+                          showDialog(
+                            context: context,
+                            child: AlertDialog(
+                              title: const Text('Pick a color!'),
+                              content: SingleChildScrollView(
+                                child: ColorPicker(
+                                  pickerColor: Color(widget._settings.get("backgroind_tint",
+                                      defaultValue: Colors.orange.value)),
+                                  onColorChanged: (color) =>
+                                      widget._settings.put("backgroind_tint", color.value),
+                                  enableLabel: true,
+                                  pickerAreaHeightPercent: 0.8,
+                                ),
+                              ),
+                              actions: <Widget>[
+                                FlatButton(
+                                  child: const Text('Done'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            ),
+                          );
+
+                        },
+                      });
+                    }
+                  },
+                  child: Container(color: Colors.transparent),
+                ),
+              ),
               Positioned(
                 bottom: 0,
                 left: 0,
@@ -76,5 +137,15 @@ class _WindowedState extends State<Windowed> {
         ),
       ),
     );
+  }
+}
+
+extension When<T> on dynamic {
+  when(Map<T, Function> whens, {Function onDefault}) {
+    if (whens.containsKey(this)) {
+      whens[this]();
+    } else if (onDefault != null) {
+      onDefault();
+    }
   }
 }
