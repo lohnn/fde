@@ -22,42 +22,62 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => ActivityManager()),
-      ],
-      child: BoxOpener(
-        boxNames: ["settings"],
-        onSuccess: (context) {
-          return WatchBoxBuilder(
-            box: Hive.box("settings"),
-            builder: (context, settings) => MaterialApp(
-              title: 'Flutter Demo',
-              theme: settings.get("dark_mode", defaultValue: true)
-                  ? ThemeData.dark()
-                  : ThemeData(),
-              home: MyHomePage(),
-            ),
-          );
-        },
-      ),
+    return BoxOpener(
+      boxNames: ["settings"],
+      onSuccess: (context) {
+        return WatchBoxBuilder(
+          box: Hive.box("settings"),
+          builder: (context, settings) => MaterialApp(
+            title: 'Flutter Demo',
+            theme: settings.get("dark_mode", defaultValue: true)
+                ? ThemeData.dark()
+                : ThemeData(),
+            initialRoute: "/",
+            routes: {
+              "/": (context) => MyHomePage(),
+              "/clock": (context) => MyHomePage(
+                    defaultApps: ["clock"],
+                  ),
+            },
+//            onGenerateRoute: (settings) {
+//              List<String> defaultApps = [];
+//                if(settings.name == "/clock")
+//                  defaultApps.add("clock");
+//              return MaterialPageRoute(
+//                builder: (context) => MyHomePage(defaultApps: defaultApps,),
+//                settings: settings,
+//              );
+//            },
+//              home: MyHomePage(),
+          ),
+        );
+      },
     );
   }
 }
 
 class MyHomePage extends StatelessWidget {
+  final List<String> defaultApps;
+
+  const MyHomePage({Key key, this.defaultApps}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return WatchBoxBuilder(
-      box: Hive.box("settings"),
-      builder: (context, settings) => LayoutBuilder(
-        builder: (context, constraints) {
-          if (constraints.maxWidth < 600 || constraints.maxHeight < 600) {
-            return FullScreen(settings);
-          } else {
-            return Windowed(settings);
-          }
-        },
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ActivityManager(defaultApps: defaultApps)),
+      ],
+      child: WatchBoxBuilder(
+        box: Hive.box("settings"),
+        builder: (context, settings) => LayoutBuilder(
+          builder: (context, constraints) {
+            if (constraints.maxWidth < 600 || constraints.maxHeight < 600) {
+              return FullScreen(settings);
+            } else {
+              return Windowed(settings);
+            }
+          },
+        ),
       ),
     );
   }
