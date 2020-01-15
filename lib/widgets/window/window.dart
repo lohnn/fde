@@ -125,7 +125,6 @@ class _ResizeGrabberPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    print(size);
     //Top right
     canvas.drawCircle(
       Offset(size.width * 0.75, size.height * 0.25),
@@ -150,6 +149,20 @@ class _ResizeGrabberPainter extends CustomPainter {
     //Bottom left
     canvas.drawCircle(
       Offset(size.width * 0.25, size.height * 0.75),
+      _radius,
+      _paint,
+    );
+
+    //Center left
+    canvas.drawCircle(
+      Offset(size.width * 0.5, size.height * 0.75),
+      _radius,
+      _paint,
+    );
+
+    //Bottom center
+    canvas.drawCircle(
+      Offset(size.width * 0.75, size.height * 0.50),
       _radius,
       _paint,
     );
