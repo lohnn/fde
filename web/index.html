@@ -5,6 +5,16 @@
   <title>flutter_desktop_environment</title>
 </head>
 <body>
+  <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
+  <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-firestore.js"></script>
+  <script>
+    var firebaseConfig = {
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+  </script>
   <script src="main.dart.js" type="application/javascript"></script>
 </body>
 </html>

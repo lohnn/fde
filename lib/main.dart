@@ -38,6 +38,9 @@ class MyApp extends StatelessWidget {
               "/clock": (context) => MyHomePage(
                     defaultApps: ["clock"],
                   ),
+              "/chat": (context) => MyHomePage(
+                    defaultApps: ["chat"],
+                  ),
             },
 //            onGenerateRoute: (settings) {
 //              List<String> defaultApps = [];
@@ -65,7 +68,8 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => ActivityManager(defaultApps: defaultApps)),
+        ChangeNotifierProvider(
+            create: (_) => ActivityManager(defaultApps: defaultApps)),
       ],
       child: WatchBoxBuilder(
         box: Hive.box("settings"),

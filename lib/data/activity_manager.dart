@@ -2,6 +2,7 @@ import 'package:digital_clock/emoji_clock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clock_helper/customizer.dart';
 import 'package:flutter_clock_helper/model.dart';
+import 'package:flutter_desktop_environment/apps/chat/chat_prereq.dart';
 import 'package:flutter_desktop_environment/apps/lohnn_web/lohnn_web.dart';
 import 'package:uuid/uuid.dart';
 
@@ -32,6 +33,18 @@ class ActivityManager with ChangeNotifier {
           _uuid.v1(),
           _Temp(
               child: ClockCustomizer((ClockModel model) => EmojiClock(model)),
+              startX: _lastX += 20,
+              startY: _lastY += 15,
+              sortIndex: _maxSortIndex++),
+        ),
+      );
+    }
+    if (defaultApps?.contains("chat") ?? false) {
+      _activities.add(
+        MapEntry(
+          _uuid.v1(),
+          _Temp(
+              child: ChatPrereq(),
               startX: _lastX += 20,
               startY: _lastY += 15,
               sortIndex: _maxSortIndex++),
