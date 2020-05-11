@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
@@ -68,16 +69,17 @@ class _WindowedState extends State<Windowed> {
                             value: "darkmode",
                             checked: widget._settings.get("dark_mode") ?? true,
                           ),
-                          PopupMenuItem(
-                            child: Text("Set background tint"),
-                            value: "backgroundTint",
-                          ),
+                          if (!kIsWeb)
+                            PopupMenuItem(
+                              child: Text("Set background tint"),
+                              value: "backgroundTint",
+                            ),
                         ],
                       );
                       menuResult.when({
                         "darkmode": () {
-                          widget._settings.put(
-                              "dark_mode", !(widget._settings.get("dark_mode") ?? true));
+                          widget._settings.put("dark_mode",
+                              !(widget._settings.get("dark_mode") ?? true));
                         },
                         "backgroundTint": () {
                           showDialog(

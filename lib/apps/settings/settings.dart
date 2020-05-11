@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:hive/hive.dart';
@@ -16,34 +17,35 @@ class Settings extends StatelessWidget {
               onChanged: (value) => settings.put("dark_mode", value),
               title: Text("Dark mode"),
             ),
-            ListTile(
-              onTap: () {
-                showDialog(
-                  context: context,
-                  child: AlertDialog(
-                    title: const Text('Pick a color!'),
-                    content: SingleChildScrollView(
-                      child: ColorPicker(
-                        pickerColor: Color(settings.get("backgroind_tint",
-                            defaultValue: Colors.orange.value)),
-                        onColorChanged: (color) =>
-                            settings.put("backgroind_tint", color.value),
-                        pickerAreaHeightPercent: 0.8,
+            if (!kIsWeb)
+              ListTile(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    child: AlertDialog(
+                      title: const Text('Pick a color!'),
+                      content: SingleChildScrollView(
+                        child: ColorPicker(
+                          pickerColor: Color(settings.get("backgroind_tint",
+                              defaultValue: Colors.orange.value)),
+                          onColorChanged: (color) =>
+                              settings.put("backgroind_tint", color.value),
+                          pickerAreaHeightPercent: 0.8,
+                        ),
                       ),
+                      actions: <Widget>[
+                        FlatButton(
+                          child: const Text('Done'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
                     ),
-                    actions: <Widget>[
-                      FlatButton(
-                        child: const Text('Done'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ],
-                  ),
-                );
-              },
-              title: Text("Background color tint"),
-            )
+                  );
+                },
+                title: Text("Background color tint"),
+              )
           ],
         ),
       ),
