@@ -1,11 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_desktop_environment/data/activity_manager.dart';
 import 'package:flutter_desktop_environment/widgets/bottom_toolbar/bottom_toolbar.dart';
 import 'package:flutter_desktop_environment/widgets/window/window.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 class Windowed extends StatefulWidget {
   final Box _settings;
@@ -66,7 +66,7 @@ class _WindowedState extends State<Windowed> {
                           CheckedPopupMenuItem(
                             child: Text("Dark mode"),
                             value: "darkmode",
-                            checked: widget._settings.get("dark_mode"),
+                            checked: widget._settings.get("dark_mode") ?? true,
                           ),
                           PopupMenuItem(
                             child: Text("Set background tint"),
@@ -76,7 +76,8 @@ class _WindowedState extends State<Windowed> {
                       );
                       menuResult.when({
                         "darkmode": () {
-                          widget._settings.put("dark_mode", !widget._settings.get("dark_mode"));
+                          widget._settings.put(
+                              "dark_mode", !(widget._settings.get("dark_mode") ?? true));
                         },
                         "backgroundTint": () {
                           showDialog(
@@ -85,11 +86,11 @@ class _WindowedState extends State<Windowed> {
                               title: const Text('Pick a color!'),
                               content: SingleChildScrollView(
                                 child: ColorPicker(
-                                  pickerColor: Color(widget._settings.get("backgroind_tint",
+                                  pickerColor: Color(widget._settings.get(
+                                      "backgroind_tint",
                                       defaultValue: Colors.orange.value)),
-                                  onColorChanged: (color) =>
-                                      widget._settings.put("backgroind_tint", color.value),
-                                  enableLabel: true,
+                                  onColorChanged: (color) => widget._settings
+                                      .put("backgroind_tint", color.value),
                                   pickerAreaHeightPercent: 0.8,
                                 ),
                               ),
@@ -103,7 +104,6 @@ class _WindowedState extends State<Windowed> {
                               ],
                             ),
                           );
-
                         },
                       });
                     }

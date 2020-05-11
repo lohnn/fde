@@ -1,15 +1,11 @@
-import 'package:digital_clock/emoji_clock.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_clock_helper/customizer.dart';
-import 'package:flutter_clock_helper/model.dart';
 import 'package:flutter_desktop_environment/apps/about/about.dart';
 import 'package:flutter_desktop_environment/apps/lohnn_web/lohnn_web.dart';
 import 'package:flutter_desktop_environment/apps/settings/settings.dart';
 import 'package:flutter_desktop_environment/widgets/window/window.dart';
-import 'package:text_editor/text_editor.dart';
 
 class BottomToolbar extends StatelessWidget {
   final _borders = const Radius.circular(8);

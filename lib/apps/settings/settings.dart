@@ -28,7 +28,6 @@ class Settings extends StatelessWidget {
                             defaultValue: Colors.orange.value)),
                         onColorChanged: (color) =>
                             settings.put("backgroind_tint", color.value),
-                        enableLabel: true,
                         pickerAreaHeightPercent: 0.8,
                       ),
                     ),

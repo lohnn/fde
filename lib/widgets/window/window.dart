@@ -121,7 +121,7 @@ class ResizeGrabber extends StatelessWidget {
 
 class _ResizeGrabberPainter extends CustomPainter {
   static const _radius = 1.25;
-    static final _paint = Paint()..color = Colors.white.withAlpha(100);
+  static final _paint = Paint()..color = Colors.white.withAlpha(100);
 
   @override
   void paint(Canvas canvas, Size size) {
